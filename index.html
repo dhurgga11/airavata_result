@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Airavata Tourguide Web-based System">
+  <title>Airavata | Tourguide System</title>
+  <style>
+    :root { --ink:#16302b; --muted:#63756f; --leaf:#317263; --green:#c9df9b; --cream:#f7f5ed; --sand:#ebe6d7; --white:#fffefa; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; font-family:Arial, Helvetica, sans-serif; color:var(--ink); background:var(--cream); }
+    .serif { font-family:Georgia, 'Times New Roman', serif; }
+    .nav { position:fixed; z-index:10; left:22px; top:50%; transform:translateY(-50%); display:flex; align-items:center; justify-content:center; }
+    .brand { display:flex; gap:11px; align-items:center; font-weight:800; letter-spacing:.1px; font-size:19px; }
+    .brand-mark { width:31px; height:31px; border:2px solid var(--leaf); border-radius:50% 50% 50% 8px; transform:rotate(-38deg); position:relative; }
+    .brand-mark:after { content:''; position:absolute; height:17px; border-left:2px solid var(--leaf); left:14px; top:6px; transform:rotate(36deg); }
+    .nav a { color:var(--ink); text-decoration:none; font-size:14px; font-weight:700; }
+    .nav-links { display:flex; flex-direction:column; gap:4px; align-items:stretch; padding:6px; border:1px solid #dce2d7; border-radius:18px; background:rgba(255,254,250,.92); box-shadow:0 10px 26px rgba(30,55,46,.12); backdrop-filter:blur(8px); }
+    .nav-links a { padding:10px 13px; border-radius:100px; white-space:nowrap; transition:background .2s,color .2s; }
+    .nav-links a:hover { background:var(--ink); color:white; }
+    .nav-links a.active { background:var(--ink); color:white; }
+    .button { display:inline-flex; align-items:center; justify-content:center; border:none; border-radius:100px; padding:13px 20px; background:var(--ink); color:white!important; font-weight:700; font-size:14px; text-decoration:none; cursor:pointer; }
+    .hero { min-height:630px; padding:62px 24px 82px 124px; overflow:hidden; position:relative; }
+    .hero:before { content:''; position:absolute; width:480px; height:480px; border-radius:50%; background:var(--green); right:-150px; top:5px; opacity:.5; }
+    .hero-inner { max-width:1132px; margin:auto; display:grid; grid-template-columns:1.02fr .98fr; align-items:center; gap:56px; position:relative; }
+    .eyebrow { text-transform:uppercase; letter-spacing:2px; font-size:11px; font-weight:800; color:var(--leaf); margin:0 0 19px; }
+    h1 { font-size:clamp(49px, 6vw, 78px); line-height:.97; letter-spacing:-3.5px; margin:0; max-width:650px; }
+    .intro { max-width:505px; line-height:1.65; font-size:17px; color:var(--muted); margin:27px 0 30px; }
+    .hero-actions { display:flex; align-items:center; gap:25px; }
+    .text-link { color:var(--ink); font-size:14px; font-weight:700; text-decoration:none; border-bottom:1px solid var(--ink); padding-bottom:4px; }
+    .showcase { background:var(--white); border-radius:26px; padding:13px; box-shadow:0 28px 55px rgba(26,54,47,.16); transform:rotate(2deg); }
+    .browser { border-radius:17px; background:#edf0e9; overflow:hidden; min-height:335px; }
+    .browser-top { height:37px; padding:0 13px; display:flex; gap:6px; align-items:center; background:#dfe4da; }
+    .dot { width:8px; height:8px; border-radius:50%; background:#b7bfb7; }
+    .screen { height:298px; padding:20px; display:grid; grid-template-columns:65px 1fr; gap:18px; }
+    .fake-side { background:var(--ink); border-radius:8px; padding:15px 10px; display:grid; align-content:start; gap:14px; }
+    .side-line { height:5px; width:100%; border-radius:8px; background:#7fa098; }.side-line:nth-child(3){width:70%; background:var(--green);}
+    .fake-main { display:grid; grid-template-rows:auto 1fr; gap:17px; }.fake-title { display:flex; justify-content:space-between; align-items:center; }.fake-title b { font-size:18px; }.avatar { width:24px; height:24px; border-radius:50%; background:#d3a561; }
+    .fake-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }.fake-card { background:white; border-radius:10px; padding:13px; }.mini-icon { width:24px; height:24px; border-radius:7px; background:#d9ead9; margin-bottom:13px; }.mini-line { height:6px; background:#dfe4da; border-radius:8px; margin:6px 0; }.mini-line.short { width:55%; }
+    .stats { grid-column:1 / -1; background:white; border-radius:10px; padding:13px; display:flex; gap:12px; align-items:end; }.bar { width:12%; background:#8bbca8; border-radius:4px 4px 0 0; }.bar:nth-child(1){height:35%;}.bar:nth-child(2){height:65%;}.bar:nth-child(3){height:46%;}.bar:nth-child(4){height:87%;background:var(--leaf);}.bar:nth-child(5){height:57%;}.bar:nth-child(6){height:73%;}.bar:nth-child(7){height:43%;}
+    .modules { background:var(--sand); padding:94px 24px 94px 124px; }
+    .section-head { max-width:1132px; margin:0 auto 46px; display:flex; justify-content:space-between; align-items:end; gap:25px; }.section-head h2 { font-size:clamp(35px,4vw,53px); letter-spacing:-2px; line-height:1; margin:0; }.section-head p { max-width:410px; color:var(--muted); line-height:1.55; margin:0; }
+    .module-grid { max-width:1132px; margin:auto; display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+    .module { background:var(--white); border-radius:16px; padding:25px 19px 22px; min-height:225px; display:flex; flex-direction:column; transition:transform .2s, box-shadow .2s; }.module:hover { transform:translateY(-5px); box-shadow:0 14px 25px rgba(39,62,53,.1); }
+    .module-number { color:var(--leaf); font-size:12px; font-weight:bold; letter-spacing:1px; }.module h3 { margin:27px 0 10px; font-size:18px; line-height:1.1; letter-spacing:-.5px; }.module p { margin:0; color:var(--muted); line-height:1.5; font-size:13px; }
+    .gallery { padding:96px 24px 110px 124px; }.gallery-wrap { max-width:1132px; margin:auto; }.gallery-intro { text-align:center; max-width:570px; margin:0 auto 46px; }.gallery-intro h2 { font-size:clamp(37px,4vw,53px); letter-spacing:-2px; margin:0 0 14px; }.gallery-intro p { color:var(--muted); line-height:1.55; margin:0; }
+    .shot-grid { display:block; }.shot { display:none; border-radius:18px; overflow:hidden; background:white; box-shadow:0 14px 30px rgba(28,57,48,.11); }.shot.active { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(270px,.8fr); min-height:440px; }.shot.large { grid-column:auto; }.shot-image { position:relative; aspect-ratio:16/8; background:linear-gradient(135deg,#d4e5dc,#eff3e9); overflow:hidden; }.shot:not(.large) .shot-image { aspect-ratio:16/10; }.shot.active .shot-image { aspect-ratio:auto; min-height:440px; }.shot-image img { width:100%; height:100%; object-fit:cover; display:block; }.placeholder { position:absolute; inset:0; display:grid; place-items:center; color:#60796f; text-align:center; font-size:13px; line-height:1.6; }.placeholder strong { display:block; color:var(--leaf); font-size:14px; }.profile-controls { position:absolute; z-index:2; inset:auto 18px 18px; display:flex; justify-content:space-between; pointer-events:none; }.profile-arrow { width:43px; height:43px; border:0; border-radius:50%; background:rgba(22,48,43,.9); color:white; font-size:25px; line-height:1; cursor:pointer; pointer-events:auto; box-shadow:0 4px 12px rgba(0,0,0,.2); transition:transform .2s,background .2s; }.profile-arrow:hover { transform:scale(1.08); background:var(--leaf); }.profile-count { position:absolute; z-index:2; left:50%; bottom:28px; transform:translateX(-50%); padding:6px 11px; border-radius:100px; background:rgba(255,254,250,.9); color:var(--ink); font-size:12px; font-weight:bold; }.shot-copy { padding:38px 31px; display:flex; flex-direction:column; justify-content:center; background:#fffefa; border-left:1px solid #e4e6df; }.shot-copy h3 { margin:0 0 14px; font-size:27px; line-height:1.1; letter-spacing:-.8px; }.shot-copy p { margin:0; color:var(--muted); font-size:16px; line-height:1.65; }
+    footer { background:var(--ink); color:#e6efe8; padding:31px 24px 31px 124px; }.footer-inner { max-width:1132px; margin:auto; display:flex; justify-content:center; text-align:center; gap:20px; font-size:13px; }.footer-brand { font-weight:800; }
+    @media(max-width:800px) { .nav{position:sticky; top:0; left:auto; transform:none; justify-content:flex-start; overflow-x:auto; padding:10px 18px; background:var(--cream)}.nav-links{flex-direction:row; border-radius:100px}.hero{padding:32px 24px 82px}.modules{padding:94px 24px}.gallery{padding:96px 24px 110px}.hero-inner{grid-template-columns:1fr;gap:52px}.showcase{max-width:570px;margin:auto}.module-grid{grid-template-columns:repeat(2,1fr)}.section-head{display:block}.section-head p{margin-top:17px}.shot.active{grid-template-columns:1fr}.shot.active .shot-image{min-height:300px;aspect-ratio:16/10}.shot-copy{border-left:0;border-top:1px solid #e4e6df;padding:26px}.footer-inner{display:block}.footer-inner p{margin-top:12px}footer{padding:31px 24px} }
+    @media(max-width:460px) { .nav{padding:10px 18px}.hero,.modules,.gallery{padding-left:18px;padding-right:18px}.nav-links{gap:0}.nav-links a{font-size:12px;padding:9px 10px}.button{padding:11px 15px}.module-grid{grid-template-columns:1fr}.hero-actions{gap:17px}.showcase{transform:none}.screen{padding:13px;gap:10px;grid-template-columns:48px 1fr}.fake-cards{gap:7px}.fake-card{padding:8px} }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="System modules">
+    <div class="nav-links"><a class="active" href="#screenshots" data-module="user-profile">Manage user profile</a><a href="#screenshots" data-module="booking">Manage booking</a><a href="#screenshots" data-module="payment">Manage payment</a><a href="#screenshots" data-module="tourguide">Manage tourguide</a><a href="#screenshots" data-module="report">Manage report</a></div>
+  </nav>
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow">Airavata Tourguide Web-Based System</p>
+          <h1 class="serif">Result and Output of Airavata Tourguide Web-based System.</h1>
+        </div>
+        <div class="showcase" aria-label="Illustration of the Airavata dashboard">
+          <div class="browser"><div class="browser-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div><div class="screen"><aside class="fake-side"><i class="side-line"></i><i class="side-line"></i><i class="side-line"></i><i class="side-line"></i><i class="side-line"></i></aside><div class="fake-main"><div class="fake-title"><b>Overview</b><i class="avatar"></i></div><div class="fake-cards"><div class="fake-card"><i class="mini-icon"></i><i class="mini-line"></i><i class="mini-line short"></i></div><div class="fake-card"><i class="mini-icon"></i><i class="mini-line"></i><i class="mini-line short"></i></div><div class="fake-card"><i class="mini-icon"></i><i class="mini-line"></i><i class="mini-line short"></i></div><div class="stats"><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i></div></div></div></div></div>
+        </div>
+      </div>
+    </section>
+    <section class="gallery" id="screenshots">
+      <div class="gallery-wrap"><div class="gallery-intro"><p class="eyebrow">System output</p><h2 class="serif">A closer look at Airavata.</h2></div>
+        <div class="shot-grid">
+          <article class="shot large active" id="user-profile"><div class="shot-image"><img id="profile-image" src="screenshot/user-profile.png" alt="User profile management screenshot" onload="document.getElementById('profile-placeholder').style.display='none'" onerror="this.style.display='none'"><div class="placeholder" id="profile-placeholder"><strong>User profile module</strong>Place your image at screenshot/user-profile.png</div><div class="profile-controls"><button class="profile-arrow" type="button" aria-label="Previous user profile screenshot" onclick="changeProfileSlide(-1)">‹</button><button class="profile-arrow" type="button" aria-label="Next user profile screenshot" onclick="changeProfileSlide(1)">›</button></div><span class="profile-count" id="profile-count">1 / 2</span></div><div class="shot-copy"><h3 id="profile-title">Manage user profile</h3><p id="profile-description">Maintain account details and user information in one secure, easy-to-access space.</p></div></article>
+          <article class="shot" id="booking"><div class="shot-image"><img src="screenshot/booking.png" alt="Booking management screenshot" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'"><div class="placeholder"><strong>Booking module</strong>screenshot/booking.png</div></div><div class="shot-copy"><h3>Manage booking</h3><p>Keep every reservation visible and organised from a single screen.</p></div></article>
+          <article class="shot" id="payment"><div class="shot-image"><img src="screenshot/payment.png" alt="Payment management screenshot" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'"><div class="placeholder"><strong>Payment module</strong>screenshot/payment.png</div></div><div class="shot-copy"><h3>Manage payment</h3><p>Monitor payment details and transaction progress with ease.</p></div></article>
+          <article class="shot" id="tourguide"><div class="shot-image"><img src="screenshot/tourguide.png" alt="Tourguide management screenshot" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'"><div class="placeholder"><strong>Tourguide module</strong>screenshot/tourguide.png</div></div><div class="shot-copy"><h3>Manage tourguide</h3><p>Handle tourguide profiles and assignments in a neat workspace.</p></div></article>
+          <article class="shot" id="report"><div class="shot-image"><img src="screenshot/report.png" alt="Reports screenshot" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'"><div class="placeholder"><strong>Report module</strong>screenshot/report.png</div></div><div class="shot-copy"><h3>Manage report</h3><p>Review the information that matters through practical system reporting.</p></div></article>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer><div class="footer-inner"><span class="footer-brand">© 2026 Airavata Golden Odyssey. All rights reserved.</span></div></footer>
+  <script>
+    var profileSlides = [
+      { image: 'screenshot/user-profile.png', title: 'Manage user profile', description: 'Maintain account details and user information in one secure, easy-to-access space.', alt: 'User profile management screenshot' },
+      { image: 'screenshot/user-profile-2.png', title: 'Update user profile', description: 'Edit personal details and keep user profile information accurate and up to date.', alt: 'User profile update screenshot' }
+    ];
+    var currentProfileSlide = 0;
+    function changeProfileSlide(direction) {
+      currentProfileSlide = (currentProfileSlide + direction + profileSlides.length) % profileSlides.length;
+      var slide = profileSlides[currentProfileSlide];
+      var image = document.getElementById('profile-image');
+      var placeholder = document.getElementById('profile-placeholder');
+      placeholder.style.display = 'grid';
+      image.style.display = 'block';
+      image.src = slide.image;
+      image.alt = slide.alt;
+      document.getElementById('profile-title').textContent = slide.title;
+      document.getElementById('profile-description').textContent = slide.description;
+      document.getElementById('profile-count').textContent = (currentProfileSlide + 1) + ' / ' + profileSlides.length;
+    }
+    document.querySelectorAll('[data-module]').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        var module = this.dataset.module;
+        var selectedShot = document.getElementById(module);
+        document.querySelectorAll('.shot').forEach(function (shot) { shot.classList.toggle('active', shot === selectedShot); });
+        document.querySelectorAll('[data-module]').forEach(function (item) { item.classList.toggle('active', item === link); });
+        requestAnimationFrame(function () { selectedShot.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+      });
+    });
+  </script>
+</body>
+</html>
